@@ -26,4 +26,7 @@ public interface SlideRepository extends JpaRepository<Slide, Integer>{
 			+ "  (:filterBy = 'disabled' AND  s.enabled = false)) ")
 	Page<Slide> findAllSlides(@Param("filterBy") String filterBy, PageRequest pageable);
 
+	@Query("SELECT s FROM Slide s WHERE s.enabled = true ORDER BY s.orderNumber DESC")
+	List<Slide> findAllEnabled();
+
 }

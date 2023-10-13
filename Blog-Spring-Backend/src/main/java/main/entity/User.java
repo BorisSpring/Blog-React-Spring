@@ -39,7 +39,7 @@ public class User {
 	private Authority authority;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="user", cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(mappedBy="user",  cascade = CascadeType.ALL)
 	public List<Blog> blogs = new ArrayList<>();
 
 	

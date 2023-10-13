@@ -47,7 +47,7 @@ export async function sendMessage(message) {
     const { data } = await blogApi.post(`/api/messages`, message);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -56,7 +56,7 @@ export async function getAllMessages(params) {
     const { data } = await blogApiAuth.get('/api/messages', { params: params });
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -65,7 +65,7 @@ export async function markMsgAsRead(msgId) {
     const { data } = await blogApiAuth.post(`/api/messages/readed/${msgId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -74,7 +74,7 @@ export async function markAsUnread(msgId) {
     const { data } = await blogApiAuth.post(`/api/messages/unread/${msgId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -83,7 +83,7 @@ export async function deleteMessage(msgId) {
     const { data } = await blogApiAuth.delete(`/api/messages/${msgId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -100,7 +100,7 @@ export async function addNewUser(formData) {
     );
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -109,7 +109,7 @@ export async function findAllUsers(params) {
     const { data } = await blogApiAuth.get('/api/users', { params: params });
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -118,7 +118,7 @@ export async function unbanUser(userId) {
     const { data } = await blogApiAuth.post(`/api/users/unban/${userId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -127,7 +127,7 @@ export async function banUser(userId) {
     const { data } = await blogApiAuth.post(`/api/users/ban/${userId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -136,16 +136,20 @@ export async function deleteUser(userId) {
     const { data } = await blogApiAuth.delete(`/api/users/${userId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
 export async function addHomeSlider(slideRequest) {
   try {
-    const { data } = await blogApiAuth.post(`/api/slides`, slideRequest);
-    return data;
+    const res = await blogApiAuth.post(`/api/slides`, slideRequest, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.log(error.response.data.msg);
   }
 }
 
@@ -154,7 +158,7 @@ export async function getAllHomeSliders(params) {
     const { data } = await blogApiAuth.get(`/api/slides`, { params: params });
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -165,7 +169,7 @@ export async function enableSlide(slideId) {
     );
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -174,7 +178,7 @@ export async function disableSlide(slideId) {
     const { data } = await blogApiAuth.post(`/api/slides/disable/${slideId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -185,7 +189,7 @@ export async function addSlideOrderNumber(slideId, orderNumber) {
     );
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -194,7 +198,7 @@ export async function deleteHomeSlide(slideId) {
     const { data } = await blogApiAuth.delete(`/api/slides/${slideId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -203,7 +207,7 @@ export async function createCategory(category) {
     const { data } = await blogApiAuth.post('/api/categories', category);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -215,7 +219,7 @@ export async function updateCategory(categoryId, categoryName) {
     );
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -224,7 +228,7 @@ export async function deleteCategoryById(categoryId) {
     const { data } = await blogApiAuth.delete(`/api/categories/${categoryId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -233,7 +237,7 @@ export async function getAllCategories() {
     const { data } = await blogApi.get('/api/categories');
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -244,7 +248,7 @@ export async function updateCategoryOrder(categoryId, orderNumber) {
     );
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -253,7 +257,7 @@ export async function createNewBlog(formData) {
     const { data } = await blogApiAuth.post(`/api/blogs`, formData);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -264,7 +268,7 @@ export async function getAllBlogs(params) {
     });
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -273,7 +277,7 @@ export async function deleteBlogById(blogId) {
     const { data } = await blogApiAuth.delete(`/api/blogs/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -282,7 +286,7 @@ export async function makeBlogImportant(blogId) {
     const { data } = await blogApiAuth.post(`/api/blogs/important/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -291,7 +295,7 @@ export async function makeBlogUnImportant(blogId) {
     const { data } = await blogApiAuth.post(`/api/blogs/unimportant/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -300,7 +304,7 @@ export async function disableBlogById(blogId) {
     const { data } = await blogApiAuth.post(`/api/blogs/disable/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -309,7 +313,7 @@ export async function enableBlogById(blogId) {
     const { data } = await blogApiAuth.post(`/api/blogs/enable/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -318,7 +322,7 @@ export async function findBlogById(blogId) {
     const { data } = await blogApi.get(`/api/blogs/${blogId}`);
     return data;
   } catch (error) {
-    throw Error(error?.response.data.msg);
+    console.error(error.response?.data?.msg);
   }
 }
 
@@ -505,5 +509,14 @@ export async function updateUserImage(image, userId) {
     return data;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getEnabledSlides() {
+  try {
+    const { data } = await blogApi.get(`/api/slides/enabled`);
+    return data;
+  } catch (error) {
+    console.error(error.message);
   }
 }

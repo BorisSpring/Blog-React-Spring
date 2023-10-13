@@ -1,6 +1,7 @@
 package main.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class SlideController {
 												 @RequestParam("buttonUrl") String buttonUrl,
 												 @RequestParam(name = "slideId", required = false) Integer slideId,
 												 @RequestParam(name = "file", required = false) MultipartFile file) throws SlideException, IOException{
-			
+				
 		
 		return ResponseEntity.status(HttpStatus.OK).body(slideService.addSlide(buttonTitle, title, buttonUrl, file, slideId));
 	}
@@ -79,5 +80,11 @@ public class SlideController {
 		slideService.getAllSlides(page, filterBy).forEach(c -> System.out.println(c.getId()));
 		
 		return ResponseEntity.status(HttpStatus.OK).body(slideService.getAllSlides(page, filterBy));
+	}
+	
+	@GetMapping("/enabled")
+	public ResponseEntity<List<Slide>> findEnabledSlides(){
+		
+		return ResponseEntity.status(HttpStatus.OK).body(slideService.findAllEnabled());
 	}
 }

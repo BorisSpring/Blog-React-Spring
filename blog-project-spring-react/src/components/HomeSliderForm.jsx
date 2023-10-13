@@ -21,7 +21,6 @@ const HomeSliderForm = () => {
       setImageMessage('Please provide image!');
       return;
     }
-
     const formD = new FormData();
     slideId && formD.append('slideId', Number(slideId));
     image && formD.append('file', image);
@@ -50,6 +49,7 @@ const HomeSliderForm = () => {
             <input
               type='text'
               name='buttonUrl'
+              defaultValue={slideById?.buttonUrl}
               {...register('buttonUrl', { required: true })}
               className='w-full outline-none px-2 py-1 border-b'
               placeholder='Button Url'
@@ -57,6 +57,7 @@ const HomeSliderForm = () => {
             <input
               type='text'
               name='buttonTitle'
+              defaultValue={slideById?.buttonTitle}
               {...register('buttonTitle', { required: true })}
               className='w-full outline-none px-2 py-1 border-b'
               placeholder='Button Title'
@@ -64,6 +65,7 @@ const HomeSliderForm = () => {
             <textarea
               rows={3}
               placeholder='Slider Title'
+              defaultValue={slideById?.title}
               type='text'
               name='title'
               {...register('title', { required: true })}
@@ -86,18 +88,19 @@ const HomeSliderForm = () => {
           >
             {!image && slideById?.image && (
               <img
-                className='w-full h-full object-cover object-center'
+                className='w-full h-full object-cover object-center m-auto'
                 src={`http://localhost:8080/api/users/${slideById.image}`}
                 alt={slideById?.title}
               />
             )}
-            {image ? (
+            {image && (
               <img
                 src={`${URL.createObjectURL(image)}`}
                 alt='Slider Avatar'
-                className='w-full h-full object-cover object-center'
+                className='w-full h-full object-cover object-center m-auto'
               />
-            ) : (
+            )}
+            {!image && !slideById?.image && (
               <AiOutlineFileImage className='w-10 h-10 text-gray-700' />
             )}
           </label>

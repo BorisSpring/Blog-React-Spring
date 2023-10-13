@@ -55,7 +55,7 @@ public class Blog {
 	private Category category;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="blog", cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
+	@OneToMany(mappedBy="blog", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 	
 	@JsonIgnore

@@ -44,10 +44,9 @@ public class UserController {
 	 @GetMapping("/{imageName}")
 	    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
 		 	
-	    	
-	        var imgFile = new ClassPathResource("/static/5e58bcfe-3df9-48a5-ac91-31870893ec3bborisovaSlika.jpg"  );
-	    
-	      
+	    	System.out.println(imageName);
+	        var imgFile = new ClassPathResource("static/" + imageName  );
+	        System.out.println(imgFile + " exists: " + imgFile.exists());
 	        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
 	        return ResponseEntity

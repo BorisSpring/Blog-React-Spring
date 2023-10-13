@@ -135,7 +135,6 @@ public class UserServiceImpl implements UserService {
 		User user = userRepo.findByEmail(req.getUsername());
 
 
-
 		if(user != null && passwordEncoder.matches(req.getPassword(), user.getPassword())) {
 			
 			try {

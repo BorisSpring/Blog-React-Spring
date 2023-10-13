@@ -17,7 +17,7 @@ const LoginForm = () => {
   return (
     <div className='min-h-[60vh] w-full flex-grow flex justify-center items-center text-gray-600'>
       <form
-        className='w-[90%] h-[300px] m-auto md:w-[45%] lg:w-[25px] xl:w-[20%] border-2 border-gray-600 px-4 py-2 flex flex-col gap-2'
+        className='w-[90%] h-fit m-auto md:w-[45%] lg:w-[25%] xl:w-[20%] border-2 border-gray-600 px-4 py-2 flex flex-col gap-2 mb-10 lg:mb-20'
         onSubmit={(e) => handleSubmit(e)}
       >
         <h1 className='text-center text-[22px] md:text-[24px] lg:text-[30px] font-[500]'>

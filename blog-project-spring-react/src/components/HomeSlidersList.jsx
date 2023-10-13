@@ -128,7 +128,7 @@ const HomeSlidersList = () => {
               </p>
               <img
                 src={`http://localhost:8080/api/users/${image}`}
-                alt='Home Slider'
+                alt={image}
                 className='max-w-[100px] object-cover object-top aspect-video '
               />
             </div>

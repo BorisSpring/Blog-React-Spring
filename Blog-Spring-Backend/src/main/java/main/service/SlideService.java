@@ -27,4 +27,6 @@ public interface SlideService {
 	public Page<Slide> getAllSlides(int page, String filterBy);
 	
 	public boolean deleteSlide(int slideId) throws SlideException;
+
+	public List<Slide> findAllEnabled();
 }

@@ -79,8 +79,8 @@ const UserList = () => {
                   <td className='py-2'>
                     <img
                       src={
-                        image
-                          ? 'assets/avatar-1.png'
+                        !image?.length
+                          ? '/public/img/avatar-1.jpg'
                           : `http://localhost:8080/api/users/${image}`
                       }
                       alt='User Avatar'

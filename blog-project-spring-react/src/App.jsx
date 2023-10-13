@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 // components
 import {
@@ -28,14 +28,20 @@ import {
   SingleBlog,
   AdminDashboard,
 } from './pages';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const App = () => {
-  const shoudShowNavigationAndFooter =
-    !window.location.pathname.startsWith('/dashboard');
+  const [showFooterNav, setShowFooterNav] = useState(true);
+  const location = useLocation();
+
+  useEffect(() => {
+    setShowFooterNav(() => !window.location.pathname.startsWith('/dashboard'));
+  }, [location]);
 
   return (
     <>
-      {shoudShowNavigationAndFooter && <Navigation />}
+      {showFooterNav && <Navigation />}
       <Routes>
         <Route exact path='/login' element={<LoginForm />} />
         <Route exact path='/' element={<HomePage />} />
@@ -58,7 +64,7 @@ const App = () => {
           </Route>
         </Route>
       </Routes>
-      {shoudShowNavigationAndFooter && <Footer />}
+      {showFooterNav && <Footer />}
     </>
   );
 };

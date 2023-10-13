@@ -98,7 +98,7 @@ const ContactPage = () => {
             type='submit'
             className={` ${
               isSending ? 'bg-slate-200' : 'bg-slate-500'
-            } text-white rounded-sm w-fit p-2 hover:bg-slate-600 transition-all duration-300`}
+            } text-white rounded-sm w-fit p-2 hover:bg-slate-600 transition-all duration-300 mb-10 lg:mb-20`}
           >
             Submit Your Message
           </button>

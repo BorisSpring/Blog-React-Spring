@@ -121,7 +121,7 @@ public class SlideServiceImpl implements SlideService{
 		slide.setTitle(title);
 		slide.setButtonTitle(buttonTitle);
 		slide.setButtonUrl(buttonUrl);
-		slide.setEnabled(true);
+		slide.setEnabled(slideId == null ? true : slide.isEnabled());
 		
 		if(imageName != null)
 			slide.setImage(imageName);
@@ -158,6 +158,13 @@ public class SlideServiceImpl implements SlideService{
 		 slideRepo.deleteById(slideId);
 		 return true;
 		 
+	}
+
+
+
+	@Override
+	public List<Slide> findAllEnabled() {
+		 return slideRepo.findAllEnabled();
 	}
 
 }

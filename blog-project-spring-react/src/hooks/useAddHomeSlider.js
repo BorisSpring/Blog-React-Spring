@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 export function useAddHomeSlider() {
   const { mutate: addHomeSlider, isLoading: isAddingSlider } = useMutation({
-    mutationFn: (slideRequest) => addHomeSliderApi(slideRequest),
+    mutationFn: async (slideRequest) => await addHomeSliderApi(slideRequest),
     onSuccess: (data) => {
       data?.id > 0
         ? toast.success('Susecfully added new home slider')

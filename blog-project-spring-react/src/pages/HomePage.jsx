@@ -14,18 +14,21 @@ import {
 //custom hooks
 import { useFindLastThreeImportant } from '../hooks/useFindLastThreeImportant';
 import { useFindNewestBlogs } from '../hooks/useFindNewestBlogs';
+import { useGetEnabledSlide } from '../hooks/useGetEnabledSlide';
 
 const HomePage = () => {
   const isDesktopMode = useMediaQuery({ query: '(min-width:1030px)' });
   const { lastThreeImportant, isLoadingImportant } =
     useFindLastThreeImportant();
   const { newestBlogs, isLoadingNewest } = useFindNewestBlogs();
+  const { enabledSlides, isLoadingEnabledSlides } = useGetEnabledSlide();
 
-  if (isLoadingImportant && isLoadingNewest) return <LoadingSpinner />;
+  if (isLoadingImportant || isLoadingNewest || isLoadingEnabledSlides)
+    return <LoadingSpinner />;
   return (
     <>
       <header>
-        <MainCarousel />
+        <MainCarousel slides={enabledSlides} />
         <div className='container mx-auto  px-5 my-[48px] lg:px-10'>
           <h1 className='text-[32px] md:text-[44px] lg:text[60px] font-bold text-slate-900 mb-3 leading-8 md:leading-10'>
             Some great into here

@@ -39,7 +39,7 @@ public class SecurityConfig {
 		http.sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		 .authorizeHttpRequests(authorize -> authorize
 				 .requestMatchers(HttpMethod.POST , "/api/users/image/{userId}").permitAll()
-				.requestMatchers(HttpMethod.GET ,"/api/users/{imageName}", "/api/categories" ,"/api/blogs/newest" ,"/auth/logged", "/api/blogs","/api/blogs/{blogId}", "/api/blogs/lastThreeImportant", "/api/blogs/threeNewest", "/api/tags").permitAll()
+				.requestMatchers(HttpMethod.GET ,"/api/users/{imageName}", "/api/categories" ,"/api/blogs/newest" ,"/auth/logged", "/api/blogs","/api/blogs/{blogId}", "/api/blogs/lastThreeImportant", "/api/blogs/threeNewest", "/api/tags" , "/api/slides/enabled").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/comments/{blogId}" , "/api/messages" , "/auth/login", "/auth/signup").permitAll()
 			 .requestMatchers("/api/**"	).authenticated())
 		 .cors((cors) -> cors.configurationSource(new CorsConfigurationSource() {
@@ -61,7 +61,7 @@ public class SecurityConfig {
 		 .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
 		 .addFilterAfter(new CsrfTokenFilter(), CsrfFilter.class)
 		 .csrf((csrf) -> csrf.csrfTokenRequestHandler(handler).ignoringRequestMatchers(
-				 "/api/comments/{blogId}" , "/api/messages" , "/auth/login", "/auth/signup", "/auth/logged"
+				 "/api/comments/{blogId}" , "/api/messages" , "/auth/login", "/auth/signup", "/auth/logged" 
 				 ).csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 		
 		return http.build();
