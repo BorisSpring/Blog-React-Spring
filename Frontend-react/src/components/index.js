@@ -1,0 +1,12 @@
+export { default as BlogSwiper } from './MainPage/BlogSwiper';
+export { default as Categories } from './Categories';
+export { default as ContactInfo } from './ContactPage/ContactInfo';
+export { default as Footer } from './Footer';
+export { default as LatestBlogs } from './ContactPage/LatestBlogs';
+export { default as LoadingSpinner } from './LoadingSpinner';
+export { default as MainPageBlog } from './MainPage/MainPageBlog';
+export { default as Navigation } from './Navigation';
+export { default as Pagination } from './Pagination';
+export { default as SearchBlog } from './SearchBlog';
+export { default as Tags } from './Tags';
+export { default as LoginForm } from './LoginForm';
