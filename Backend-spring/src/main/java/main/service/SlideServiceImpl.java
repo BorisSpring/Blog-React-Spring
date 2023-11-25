@@ -46,11 +46,11 @@ public class SlideServiceImpl implements SlideService{
 	public void enableSlide(UUID slideId) throws SlideException {
 
 		Slide slide = findById(slideId);
-		slide.setEnabled(true);
-		slide = slideRepo.save(slide);
-		
-		if(slide == null)
-			throw new SlideException("Failed to update slide status");
+
+		if(slide.isEnabled() == false){
+			slide.setEnabled(true);
+			 slideRepo.save(slide);
+		}
 	}
 
 	@Transactional
@@ -58,11 +58,11 @@ public class SlideServiceImpl implements SlideService{
 	public void disableSlide(UUID slideId) throws SlideException {
 		
 		Slide slide = findById(slideId);
-		slide.setEnabled(false);
-		Slide savedSlide = slideRepo.save(slide);
-		
-		if(savedSlide == null) 
-			throw new SlideException("Failed to update slide status");
+
+		if(slide.isEnabled() == true){
+			slide.setEnabled(false);
+			slideRepo.save(slide);
+		}
 	}
 
 	@Override
@@ -74,8 +74,6 @@ public class SlideServiceImpl implements SlideService{
 	public SlidePageList findAll(int page, String filterBy) {
 		PageRequest pageable = PageRequest.of(page > 0 ? (page - 1) : 0, 15);
 		Page<Slide> slidePage = slideRepo.findAllSlides(filterBy, pageable);
-		System.out.println(filterBy);
-		System.out.println(slideRepo.findAllSlides(filterBy,pageable).getTotalElements());
 		return new SlidePageList(slidePage.getContent(), pageable, slidePage.getTotalElements());
 	}
 

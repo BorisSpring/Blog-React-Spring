@@ -4,6 +4,7 @@ package main.repository;
 import main.model.CommentPageList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,7 @@ public interface CommentRepository extends JpaRepository<Comment, UUID>{
 			"WHERE (:status IS NULL OR c.enabled=:status) " +
 			"AND (:blogId IS NULL OR b.id =:blogId)")
 	Page<Comment> findAll(PageRequest pageable, @Param("status")Boolean status, UUID blogId);
+
+
+
 }

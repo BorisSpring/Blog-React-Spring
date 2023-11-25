@@ -56,15 +56,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void banUser(UUID userId) {
 		User user = findByUserId(userId);
-		user.setEnabled(false);
-	    userRepo.save(user);
+		if(user.isEnabled() == true){
+			user.setEnabled(false);
+			userRepo.save(user);
+		}
 	}
 
 	@Override
 	public void unBanUser(UUID userId) {
 		User user = findByUserId(userId);
-		user.setEnabled(true);
-		userRepo.save(user);
+		if(user.isEnabled() == false){
+			user.setEnabled(true);
+			userRepo.save(user);
+		}
 	}
 
 	@Override

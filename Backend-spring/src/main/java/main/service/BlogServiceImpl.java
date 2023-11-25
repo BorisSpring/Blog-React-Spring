@@ -150,7 +150,7 @@ public class BlogServiceImpl implements BlogService {
 	
 	@Override
 	public List<MainPageBlogDTO> findLastThreeImportant() {
-		return blogRepo.findTop3ByImportantIsNotNullOrderByImportantDesc()
+		return blogRepo.findTop3ByImportantIsNotNullAndEnabledIsTrueOrderByImportantDesc()
 				.stream()
 				.map(blogMapper::blogToMainPageBlogDto)
 				.collect(Collectors.toList());
@@ -225,7 +225,7 @@ public class BlogServiceImpl implements BlogService {
 
 	@Override
 	public List<LastThreeDTO> find3Newest() {
-		return  blogRepo.findTop3ByImportantIsNotNullOrderByImportantDesc()
+		return  blogRepo.findTop3ByImportantIsNotNullAndEnabledIsTrueOrderByImportantDesc()
 				.stream()
 				.map(blogMapper::blogToNewestThreeDto)
 				.collect(Collectors.toList());
