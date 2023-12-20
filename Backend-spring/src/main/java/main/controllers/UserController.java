@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import main.domain.User;
 import main.model.UserPageList;
@@ -26,8 +27,9 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ResponseEntity<UserPageList> findAllUsersHandler(@RequestParam(name = "filterBy", required = false) String filterBy , @RequestParam(name = "page" , defaultValue = "1") int page){
-		return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsers(filterBy, page));
+	public ResponseEntity<UserPageList> findAllUsersHandler(@RequestParam(name = "filterBy", required = false) String filterBy ,
+															@Positive(message = "Page must be positive number") @RequestParam(name = "page" , defaultValue = "1") int page){
+		return ResponseEntity.ok(userService.findAllUsers(filterBy, page));
 	}
 	
 	 @GetMapping("/{imageName}")
@@ -36,13 +38,11 @@ public class UserController {
 	    	System.out.println(imageName);
 	        var imgFile = new ClassPathResource("static/" + imageName  );
 	        System.out.println(imgFile + " exists: " + imgFile.exists());
-	        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
 	        return ResponseEntity
-	                .ok()
-	                .contentType(MediaType.IMAGE_JPEG)
-	                .body(bytes);
-	        
+							.ok()
+							.contentType(MediaType.IMAGE_JPEG)
+							.body(StreamUtils.copyToByteArray(imgFile.getInputStream()));
 	 }
 	    
 	 @PutMapping("/unban/{userId}")

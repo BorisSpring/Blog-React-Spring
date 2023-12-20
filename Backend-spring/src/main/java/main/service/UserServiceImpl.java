@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void banUser(UUID userId) {
 		User user = findByUserId(userId);
-		if(user.isEnabled() == true){
+		if(user.isEnabled()){
 			user.setEnabled(false);
 			userRepo.save(user);
 		}
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void unBanUser(UUID userId) {
 		User user = findByUserId(userId);
-		if(user.isEnabled() == false){
+		if(!user.isEnabled()){
 			user.setEnabled(true);
 			userRepo.save(user);
 		}
@@ -123,13 +123,13 @@ public class UserServiceImpl implements UserService {
 				SecretKey key = Keys.hmacShaKeyFor(JwtConst.KEY.getBytes(StandardCharsets.UTF_8));
 
 				String jwt = Jwts.builder()
-						.setIssuedAt(new Date())
-						.setIssuer("Boris Dimitrijevic")
-						.setExpiration(new Date(new Date().getTime() + 86400000))
-						.claim("username", req.getUsername())
-						.claim("authorities", user.getAuthority().getAuthority())
-						.signWith(key)
-						.compact();
+									.setIssuedAt(new Date())
+									.setIssuer("Boris Dimitrijevic")
+									.setExpiration(new Date(new Date().getTime() + 86400000))
+									.claim("username", req.getUsername())
+									.claim("authorities", user.getAuthority().getAuthority())
+									.signWith(key)
+									.compact();
 				return new AuthResponse(true, jwt);
 			} catch (Exception e) {
 				throw new BadCredentialsException("Fail To Login, Try Again");
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
 		String imageName = null;
 		
 		if(request.getImageFile() != null) {
-			imageName = UUID.randomUUID().toString()  + request.getImageFile().getOriginalFilename();
+			imageName = UUID.randomUUID()  + request.getImageFile().getOriginalFilename();
 			Path uploadPath = Paths.get(uploadDir);
 			
 			if(!Files.exists(uploadPath)) {
@@ -157,21 +157,16 @@ public class UserServiceImpl implements UserService {
 			Files.copy(request.getImageFile().getInputStream(), uploadPath.resolve(imageName), StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		User newUser = userRepo.save(User.builder()
-						.firstName(request.getFirstName())
-						.lastName(request.getLastName())
-						.email(request.getEmail())
-						.enabled(true)
-						.password(passwordEncoder.encode(request.getPassword()))
-						.number(request.getNumber())
-						.image(imageName == null ? "avatar.svg" : imageName)
-						.authority(authorityRepo.findByAuthority("admin"))
-						.build());
-
-		if(newUser == null)
-			throw new UserException("Fail to create new user");
-
-		return newUser;
+		return  userRepo.save(User.builder()
+										.firstName(request.getFirstName())
+										.lastName(request.getLastName())
+										.email(request.getEmail())
+										.enabled(true)
+										.password(passwordEncoder.encode(request.getPassword()))
+										.number(request.getNumber())
+										.image(imageName == null ? "avatar.svg" : imageName)
+										.authority(authorityRepo.findByAuthority("admin"))
+										.build());
 	}
 
 
@@ -180,7 +175,7 @@ public class UserServiceImpl implements UserService {
 		Boolean filterValue = null;
 
 		if(filterBy != null)
-			filterValue = filterBy.equals("enabled") ? true : false;
+			filterValue = filterBy.equals("enabled");
 
 		PageRequest pageable = PageRequest.of((page > 0 ? (page - 1) : 0), 15);
 		Page<User> userPageList = userRepo.findAll(filterValue, pageable);
@@ -195,10 +190,10 @@ public class UserServiceImpl implements UserService {
 				SecretKey key = Keys.hmacShaKeyFor(JwtConst.KEY.getBytes(StandardCharsets.UTF_8));
 				
 				Claims claims = Jwts.parserBuilder()
-						.setSigningKey(key)
-						.build()
-						.parseClaimsJws(jwt)
-						.getBody();
+										.setSigningKey(key)
+										.build()
+										.parseClaimsJws(jwt)
+										.getBody();
 				
 				String username = String.valueOf(claims.get("username"));
 				return userRepo.findByEmail(username);
@@ -235,6 +230,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUserInfo(UpdateUserInfoRequest request) {
 		User user = findByUserId(request.getId());
+
 		if(!user.getEmail().equals(request.getEmail()) && userRepo.existsByEmail(request.getEmail()))
 			throw new UserException("There is alerdy use with same email adress!");
 
@@ -242,12 +238,7 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(request.getFirstName());
 		user.setLastName(request.getLastName());
 		user.setNumber(request.getNumber());
-		user = userRepo.saveAndFlush(user);
-
-		if(user == null)
-			throw new UserException("Fail to update user informations");
-
-		return user;
+		return  userRepo.saveAndFlush(user);
 	}
 
 	@Override
@@ -268,7 +259,7 @@ public class UserServiceImpl implements UserService {
 							Files.delete(path);
 			}
 
-			String imageName = UUID.randomUUID().toString() + file.getOriginalFilename();
+			String imageName = UUID.randomUUID() + file.getOriginalFilename();
 
 			path = Paths.get(uploadDir);
 			if (!Files.exists(path)) {

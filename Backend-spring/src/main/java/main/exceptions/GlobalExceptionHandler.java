@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -82,6 +83,23 @@ public class GlobalExceptionHandler {
 		ErrorDetails err = new ErrorDetails(ex.getMessage(),req.getDescription(false), LocalDateTime.now());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorDetails> exceptionHandler(Exception ex, WebRequest req){
+
+		ErrorDetails err = new ErrorDetails("There was error on server!",req.getDescription(false), LocalDateTime.now());
+
+		return ResponseEntity.internalServerError().body(err);
+	}
+
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ErrorDetails> dataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest req){
+
+		ErrorDetails err = new ErrorDetails("There was problem with database changes!",req.getDescription(false), LocalDateTime.now());
+
+		return ResponseEntity.internalServerError().body(err);
 	}
 
 

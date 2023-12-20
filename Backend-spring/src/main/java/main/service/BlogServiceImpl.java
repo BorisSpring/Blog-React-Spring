@@ -62,10 +62,7 @@ public class BlogServiceImpl implements BlogService {
 
 		if(!blog.isEnabled()){
 			blog.setEnabled(true);
-			Blog updatedBlog = blogRepo.save(blog);
-
-			if(updatedBlog == null)
-				throw new BlogException("Fail to enable blog");
+			 blogRepo.save(blog);
 		}
 	}
 
@@ -77,18 +74,14 @@ public class BlogServiceImpl implements BlogService {
 
 		if(blog.isEnabled()){
 			blog.setEnabled(false);
-			Blog updatedBlog = blogRepo.save(blog);
-
-			if(updatedBlog == null)
-				throw new BlogException("Fail to enable blog");
+			blogRepo.save(blog);
 		}
 	}
 
 
 	@Override
 	public Page<MainPageBlogDTO>  findBlogs(int pageNumber, String categoryName, String tagName, String query, UUID userId) {
-		PageRequest pageable = PageRequest.of(pageNumber > 0 ? (pageNumber - 1) : 0, 4);
-		return blogRepo.findBlogs(pageable, categoryName, tagName, query, userId);
+		return blogRepo.findBlogs(PageRequest.of((pageNumber - 1), 4), categoryName, tagName, query, userId);
 	}
 
 	@Transactional
@@ -100,12 +93,7 @@ public class BlogServiceImpl implements BlogService {
 		Integer maxImportant = blogRepo.selectMaxImportant();
 		
 		blog.setImportant(maxImportant == null ? 1 : maxImportant + 1);
-		
-		Blog updatedBlog = blogRepo.save(blog);
-		
-		if(updatedBlog == null) 
-			throw new BlogException("Fail to update blog");
-
+		blogRepo.save(blog);
 	}
 
 	@Transactional
@@ -117,10 +105,7 @@ public class BlogServiceImpl implements BlogService {
 		if (blog.getImportant() != null) {
 			blog.setImportant(null);
 
-			Blog updatedBlog = blogRepo.save(blog);
-
-			if (updatedBlog == null)
-				throw new BlogException("Fail to update blog");
+			blogRepo.save(blog);
 		}
 	}
 
@@ -129,7 +114,7 @@ public class BlogServiceImpl implements BlogService {
 		Blog blog = findById(blogId);
 		blog.setViews(blog.getViews() == null ? 1 : blog.getViews() + 1);
 		blogRepo.saveAndFlush(blog);
-		blog.getComments().removeIf(c -> c.isEnabled() == false);
+		blog.getComments().removeIf(c -> !c.isEnabled());
 
 		return  blogMapper.blogToSingleBlogDto(blog);
 	}
@@ -158,8 +143,7 @@ public class BlogServiceImpl implements BlogService {
 	
 	@Override
 	public Page<BlogDTO> findBlogsInfo(int page, String filterBy) {
-		PageRequest pageable = PageRequest.of((page - 1), 15);
-		return blogRepo.findBlogsInfo(pageable, filterBy);
+		return blogRepo.findBlogsInfo(PageRequest.of((page - 1), 15), filterBy);
 	}
 
 	@Transactional
@@ -184,9 +168,10 @@ public class BlogServiceImpl implements BlogService {
 			blog.setCategory(category);
 		}
 
-		if(request.getUserId() == null){
+		if(request.getUserId() != null){
 			blog.setUser(userService.findByUserId(request.getUserId()));
 		}
+
 		blog.setDescription(request.getDescription());
 		blog.setContentBody(request.getContentBody());
 		blog.setTitle(request.getTitle());
@@ -214,12 +199,7 @@ public class BlogServiceImpl implements BlogService {
 			blog.setImage(imageName);
 		}
 
-		Blog savedBlog = blogRepo.saveAndFlush(blog);
-
-		if(savedBlog == null)
-			throw new BlogException(request.getBlogId() == null ? "Fail to create blog" : "Fail to update blog");
-
-		return savedBlog;
+		return  blogRepo.saveAndFlush(blog);
 	}
 
 

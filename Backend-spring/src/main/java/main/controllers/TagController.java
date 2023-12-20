@@ -38,6 +38,6 @@ public class TagController {
 	
 	@GetMapping
 	public ResponseEntity<List<Tag>> findAllTags(){
-		return ResponseEntity.status(HttpStatus.OK).body(tagService.findAll());
+		return ResponseEntity.ok(tagService.findAll());
 	}
 }

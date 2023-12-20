@@ -17,12 +17,8 @@ public class MessageServiceImpl implements MessageService {
 	private final MessageRepository messageRepo;
 
 	@Override
-	public Message sendMessage(Message msg) throws MessageException {
-	    msg  = messageRepo.save(msg);
-		if(msg == null)
-			throw new MessageException("Fail to sendMessage");
-
-		return msg;
+	public Message sendMessage(Message msg)  {
+	   return messageRepo.save(msg);
 	}
 
 	@Override
@@ -40,10 +36,7 @@ public class MessageServiceImpl implements MessageService {
 
 		if(!msg.isReaded()){
 			msg.setReaded(true);
-			Message updatedMessage = messageRepo.save(msg);
-
-			if(updatedMessage == null)
-				throw new MessageException("Fail to update message status");
+		    messageRepo.save(msg);
 		}
 	}
 
@@ -53,10 +46,7 @@ public class MessageServiceImpl implements MessageService {
 
 		if(msg.isReaded()){
 			msg.setReaded(false);
-			Message updatedMessage = messageRepo.save(msg);
-
-			if(updatedMessage == null)
-				throw new MessageException("Fail to update message status");
+			messageRepo.save(msg);
 		}
 	}
 
@@ -68,9 +58,8 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public MessagePageList findMessages(int page, String filterBy) {
 		Boolean filterValue = null;
-		if(filterBy == null) {
-			filterValue =  null;	
-		}else if(filterBy.equals("readed")) {
+
+		if(filterBy.equals("readed")) {
 			filterValue = true;
 		}else if (filterBy.equals("unread")) {
 			filterValue = false;

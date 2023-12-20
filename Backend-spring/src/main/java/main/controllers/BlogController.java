@@ -28,49 +28,46 @@ public class BlogController {
 
 	@GetMapping
 	public ResponseEntity<Page<MainPageBlogDTO> > findAllBlogsHandler(@RequestParam(name="page", defaultValue="1") Integer page,
-														  @RequestParam(name="category", required=false) String categoryName , 
-														  @RequestParam(name="tag", required = false) String tagName,
-														  @RequestParam(name="query", required = false) String query,
-														  @RequestParam(name="userId", required = false) UUID userId){
+																	  @RequestParam(name="category", required=false) String categoryName ,
+																	  @RequestParam(name="tag", required = false) String tagName,
+																	  @RequestParam(name="query", required = false) String query,
+																	  @RequestParam(name="userId", required = false) UUID userId){
 		return ResponseEntity.status(HttpStatus.OK).body(blogService.findBlogs(page, categoryName, tagName, query, userId));
 	}
 	
 	@GetMapping("/threeNewest")
 	public ResponseEntity<List<LastThreeDTO>> findThreeNewest(){
-		return ResponseEntity.status(HttpStatus.OK).body(blogService.find3Newest());
+		return ResponseEntity.ok(blogService.find3Newest());
 	}
 	
 	@GetMapping("/lastThreeImportant")
 	public ResponseEntity<List<MainPageBlogDTO>> getLastThreeImportant(){
-		return ResponseEntity.status(HttpStatus.OK).body(blogService.findLastThreeImportant());
+		return ResponseEntity.ok(blogService.findLastThreeImportant());
 	}
 	
 	@GetMapping("/newest")
 	public ResponseEntity<List<MainPageBlogDTO>> findNewestHandler(){
-		return ResponseEntity.status(HttpStatus.OK).body(blogService.find12Newest());
+		return ResponseEntity.ok(blogService.find12Newest());
 	}
 	
 	@GetMapping("/allBlogs")
 	public ResponseEntity<Page<BlogDTO>> findAllBlogsDtoHandler(@RequestParam(name="page", defaultValue="1") int page,
 																@RequestParam(name="filterBy", required=false) String filterBy){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(blogService.findBlogsInfo(page, filterBy));
+		return ResponseEntity.ok(blogService.findBlogsInfo(page, filterBy));
 	}
 	
 	@GetMapping("/{blogId}")
 	public ResponseEntity<SingleBlogDTO> findBlogByIdHandler(@PathVariable(name = "blogId") UUID blogId){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(blogService.findSingleBlog(blogId));
+		return ResponseEntity.ok(blogService.findSingleBlog(blogId));
 	}
 
 	@PostMapping
 	public ResponseEntity<Blog> createBlogHandler(@Valid @ModelAttribute CreateBlogRequest createBlogRequest) throws CategoryException, IOException {
-		System.out.println("request");
-		System.out.println(createBlogRequest.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(blogService.craeteBlog(createBlogRequest));
 	}
 
-	
 	@DeleteMapping("/{blogId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public  void deleteBlogHandler(@PathVariable(name = "blogId") UUID blogId){

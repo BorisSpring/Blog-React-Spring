@@ -37,7 +37,7 @@ public class CategoryController {
 	
 	@GetMapping
 	public ResponseEntity<List<CategoryDTO>> findAllCategoriesHandler(){
-		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAllCategories());
+		return ResponseEntity.ok(categoryService.findAllCategories());
 	}
 	
 	@PutMapping("/{categoryId}/{order}")

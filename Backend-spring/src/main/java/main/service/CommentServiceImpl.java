@@ -23,23 +23,18 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public Comment addComment(UUID blogId, CreateCommentRequest request) throws CommentException {
+	public Comment addComment(UUID blogId, CreateCommentRequest request)  {
 			
 		Blog blog = blogService.findById(blogId);
 		Comment comment = Comment.builder()
-				.blog(blog)
-				.enabled(true)
-				.content(request.getContent())
-				.name(request.getName())
-				.email(request.getEmail())
-				.build();
+						.blog(blog)
+						.enabled(true)
+						.content(request.getContent())
+						.name(request.getName())
+						.email(request.getEmail())
+						.build();
 
-		comment = commentRepo.save(comment);
-		
-		if(comment  == null)
-			throw new CommentException("Failed to add comment");
-
-		return comment;
+		return commentRepo.save(comment);
 	}
 
 	@Transactional
@@ -50,9 +45,7 @@ public class CommentServiceImpl implements CommentService {
 
 		if(comment.isEnabled()){
 			comment.setEnabled(false);
-		    comment =  commentRepo.save(comment);
-
-			if(comment == null) throw new CommentException("Fail to disable comment");
+		     commentRepo.save(comment);
 		}
 	}
 
@@ -64,9 +57,7 @@ public class CommentServiceImpl implements CommentService {
 
 		if(!comment.isEnabled()){
 			comment.setEnabled(true);
-			comment = commentRepo.saveAndFlush(comment);
-
-			if(comment == null) throw new CommentException("Fail to disable comment");
+		    commentRepo.saveAndFlush(comment);
 		}
 	}
 
@@ -85,9 +76,9 @@ public class CommentServiceImpl implements CommentService {
 		Boolean commentStatus = null;
 
 		if(status != null)
-			 commentStatus = status.equals("disabled") ? false : true;
+			 commentStatus = !status.equals("disabled");
 
-		PageRequest pageable = PageRequest.of(pageNumber > 0 ? (pageNumber- 1) : 0, 12);
+		PageRequest pageable = PageRequest.of((pageNumber- 1), 12);
 		Page<Comment> commentPage = commentRepo.findAll(pageable, commentStatus, blogId);
 
 		return new CommentPageList(commentPage.getContent(), pageable, commentPage.getTotalElements());

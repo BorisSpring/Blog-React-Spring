@@ -23,12 +23,7 @@ public class TagServiceImpl implements TagService {
 		if(tagRepo.existsByName(tag.getName()))
 			throw new TagException("There is alerdy tag with same name, please chose another one!");
 
-		tag = tagRepo.save(tag);
-		
-		if(tag == null)
-			throw new TagException("Fail to save tag");
-
-		return tag;
+		return tagRepo.save(tag);
 	}
 
 	@Override
@@ -49,10 +44,7 @@ public class TagServiceImpl implements TagService {
 			throw new TagException("Tag with name " + newTagName + " alerd exists, Please chose another one!");
 
 		tag.setName(newTagName);
-		tag = tagRepo.saveAndFlush(tag);
-
-		if(tag == null)
-			throw new TagException("Fail to update tag name");
+		tagRepo.saveAndFlush(tag);
 	}
 
 	@Override

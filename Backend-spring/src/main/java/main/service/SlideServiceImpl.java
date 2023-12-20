@@ -35,10 +35,7 @@ public class SlideServiceImpl implements SlideService{
 			throw new SlideException("There is alerdy slide with same order number!");
 
 		slide.setOrderNumber(orderNumber);
-		slide =  slideRepo.save(slide);
-		
-		if(slide == null)
-			throw new SlideException("Failed to update slide status");
+		slideRepo.save(slide);
 	}
 
 	@Transactional
@@ -47,7 +44,7 @@ public class SlideServiceImpl implements SlideService{
 
 		Slide slide = findById(slideId);
 
-		if(slide.isEnabled() == false){
+		if(!slide.isEnabled()){
 			slide.setEnabled(true);
 			 slideRepo.save(slide);
 		}
@@ -59,7 +56,7 @@ public class SlideServiceImpl implements SlideService{
 		
 		Slide slide = findById(slideId);
 
-		if(slide.isEnabled() == true){
+		if(slide.isEnabled()){
 			slide.setEnabled(false);
 			slideRepo.save(slide);
 		}
@@ -106,12 +103,12 @@ public class SlideServiceImpl implements SlideService{
 			Files.createDirectories(path);
 
 		if(slideRequest.getImage() != null){
-			imageName = UUID.randomUUID().toString() + slideRequest.getImage().getOriginalFilename();
+			imageName = UUID.randomUUID() + slideRequest.getImage().getOriginalFilename();
 			Files.copy(slideRequest.getImage().getInputStream(), path.resolve(imageName), StandardCopyOption.REPLACE_EXISTING);
 		}
 		slide = Slide.builder()
 				.id(slideRequest.getSlideId() == null ? null : slideRequest.getSlideId())
-				.enabled(slideRequest.getSlideId() == null ? true : slide.isEnabled())
+				.enabled(slideRequest.getSlideId() == null || slide.isEnabled())
 				.orderNumber(slideRequest.getSlideId() ==  null ? null : slide.getOrderNumber())
 				.image(imageName == null ? slide.getImage() : imageName)
 				.title(slideRequest.getTitle())
@@ -119,12 +116,7 @@ public class SlideServiceImpl implements SlideService{
 				.buttonTitle(slideRequest.getButtonTitle())
 				.build();
 
-		Slide updatedSlide = slideRepo.saveAndFlush(slide);
-
-		if(updatedSlide == null)
-			throw new SlideException(slideRequest.getSlideId() == null ? "Fail to add new slide" : " Fail to update slide");
-
-		return  updatedSlide;
+		return slideRepo.saveAndFlush(slide);
 	}
 
 }

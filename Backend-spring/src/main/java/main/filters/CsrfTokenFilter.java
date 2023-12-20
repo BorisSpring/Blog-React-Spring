@@ -14,7 +14,6 @@ public class CsrfTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-
 		CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 
 			if(csrf.getHeaderName() != null) {

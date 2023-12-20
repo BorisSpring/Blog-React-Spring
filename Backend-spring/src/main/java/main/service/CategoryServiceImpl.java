@@ -24,15 +24,10 @@ public class CategoryServiceImpl implements CategoryService {
 		if(categoryRepo.existsByName(categoryName))
 			throw new CategoryException("There is alerdy category with same name!");
 
-		Category savedNewCategory = categoryRepo.save(Category.builder()
-				.order(null)
-				.name(categoryName)
-				.build());
-
-		if (savedNewCategory == null)
-			throw new CategoryException("Failed to add new category");
-
-		return savedNewCategory;
+		return categoryRepo.save(Category.builder()
+										.order(null)
+										.name(categoryName)
+										.build());
 	}
 
 	@Override
@@ -54,10 +49,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 		category.setName(categoryName.replaceAll("\"", ""));
 		categoryRepo.saveAndFlush(category);
-
-		if (category == null)
-			throw new CategoryException("Failed to update category name");
-
 	}
 
 	@Override
@@ -69,12 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new CategoryException("There is alerdy category with same order number!");
 
 		category.setOrder(orderNumber);
-		category = categoryRepo.saveAndFlush(category);
-
-		if (category == null) {
-			throw new CategoryException("Fail to update category order!");
-		}
-
+		categoryRepo.saveAndFlush(category);
 	}
 
 	@Override

@@ -46,6 +46,6 @@ public class CommentController {
 	public ResponseEntity<Page<Comment>> findAllCommentsHandler(@RequestParam(name="page", defaultValue="1") Integer page,
 																@RequestParam(name="filterBy", required= false) String filterBy,
 																@RequestParam( name = "blogId", required= false) UUID blogId){
-		return ResponseEntity.status(HttpStatus.OK).body(commentService.findComments(page, filterBy, blogId));
+		return ResponseEntity.ok(commentService.findComments(page, filterBy, blogId));
 	}
 }

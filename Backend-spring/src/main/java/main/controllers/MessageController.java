@@ -1,6 +1,7 @@
 package main.controllers;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import main.model.MessagePageList;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class MessageController {
 	@PutMapping("/readed/{msgId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void setAsReadedHandler(@PathVariable(name = "msgId") UUID msgId) throws MessageException{
-	  msgService.setReaded(msgId);
+	   msgService.setReaded(msgId);
 	}
 	
 	@PutMapping("/unread/{msgId}")
@@ -42,7 +43,7 @@ public class MessageController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<MessagePageList> findMessagesHandler(@RequestParam(name="page" ,defaultValue = "1") int page,
+	public ResponseEntity<MessagePageList> findMessagesHandler(@Positive(message = "Page must be positive number!") @RequestParam(name="page" ,defaultValue = "1") int page,
 															   @RequestParam(required = false) String filterBy){
 		return ResponseEntity.status(HttpStatus.OK).body(msgService.findMessages(page, filterBy));
 	}

@@ -14,8 +14,6 @@ import main.domain.Blog;
 
 public interface BlogService {
 
-	
-	
 	 SingleBlogDTO findSingleBlog(UUID blogId);
 	
 	 Page<MainPageBlogDTO>  findBlogs(int pageNumber, String categoryName, String tagName, String query, UUID userId);
@@ -23,7 +21,6 @@ public interface BlogService {
 	 List<MainPageBlogDTO> find12Newest();
 	
 	 List<MainPageBlogDTO> findLastThreeImportant();
-	
 	
 	 List<LastThreeDTO> find3Newest();
 
@@ -39,8 +36,7 @@ public interface BlogService {
 	
 	 void disableBlog(UUID blogId);
 
-
 	 Page<BlogDTO> findBlogsInfo(int page, String filterBy);
 
-    Blog craeteBlog(CreateBlogRequest createBlogRequest) throws CategoryException, IOException;
+     Blog craeteBlog(CreateBlogRequest createBlogRequest) throws CategoryException, IOException;
 }
