@@ -19,6 +19,7 @@ public interface BlogRepository extends JpaRepository<Blog, UUID>{
 
 	@Query("SELECT MAX(b.important) FROM Blog b ")
 	Integer selectMaxImportant();
+	
 	List<Blog> findTop3ByImportantIsNotNullAndEnabledIsTrueOrderByImportantDesc();
 
 	List<Blog> findTop12ByOrderByCreatedDateDesc();
